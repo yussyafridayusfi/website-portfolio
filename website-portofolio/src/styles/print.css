@@ -1,0 +1,180 @@
+/* ---------------------------------------------------------------------------
+   Print stylesheet.
+
+   The on-screen page is hidden and the CV document (rendered from the same
+   configuration) is shown instead. Layout is A4-first, monochrome, and tries to
+   keep each project on one page.
+   --------------------------------------------------------------------------- */
+
+.cv-document {
+  display: none;
+}
+
+@page {
+  size: A4;
+  margin: 14mm 15mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10.5pt;
+  }
+
+  /* Hide everything that is not the CV. */
+  .no-print,
+  header.no-print,
+  main.no-print,
+  footer.no-print,
+  .site-shell {
+    display: none !important;
+  }
+
+  #root > *:not(.cv-document) {
+    display: none !important;
+  }
+
+  .cv-document {
+    display: block !important;
+    max-width: none;
+    color: #000000;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  .cv-document * {
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  .cv-header {
+    border-bottom: 1pt solid #000000;
+    padding-bottom: 6pt;
+    margin-bottom: 10pt;
+  }
+
+  .cv-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20pt;
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .cv-role {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 3pt 0 0;
+  }
+
+  .cv-contact {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 8.5pt;
+    margin: 5pt 0 0;
+    word-spacing: 0.05em;
+  }
+
+  .cv-section {
+    margin-top: 11pt;
+    break-inside: auto;
+  }
+
+  .cv-section-title {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 0.5pt solid #000000;
+    padding-bottom: 2pt;
+    margin: 0 0 6pt;
+  }
+
+  .cv-paragraph {
+    margin: 0 0 4pt;
+    line-height: 1.4;
+  }
+
+  .cv-skills {
+    margin: 0;
+  }
+
+  .cv-skill-row {
+    display: grid;
+    grid-template-columns: 34mm 1fr;
+    gap: 4mm;
+    margin-bottom: 2pt;
+  }
+
+  .cv-skill-row dt {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .cv-skill-row dd {
+    margin: 0;
+    font-size: 9.5pt;
+  }
+
+  /* Keep a project description and its bullets together on one page. */
+  .cv-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 7pt;
+    padding-bottom: 5pt;
+    border-bottom: 0.25pt solid #999999;
+  }
+
+  .cv-entry:last-child {
+    border-bottom: 0;
+  }
+
+  .cv-entry-title {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10.5pt;
+    font-weight: 700;
+    margin: 0 0 2pt;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 6pt;
+    align-items: baseline;
+  }
+
+  .cv-entry-url {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 7.5pt;
+    font-weight: 400;
+  }
+
+  .cv-entry-summary {
+    margin: 0 0 2pt;
+    font-style: italic;
+  }
+
+  .cv-entry-line {
+    margin: 0 0 1pt;
+    line-height: 1.35;
+  }
+
+  .cv-entry-tech {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    margin: 3pt 0 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  /* Interactive and decorative chrome stays out of the printout. */
+  details,
+  button,
+  nav,
+  .tag {
+    display: none !important;
+  }
+}
