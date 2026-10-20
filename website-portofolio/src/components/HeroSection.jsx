@@ -78,10 +78,10 @@ export default function HeroSection() {
               <li className="min-w-0">
                 <a
                   href={`mailto:${profile.links.email}`}
-                  className="inline-flex max-w-full items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+                  aria-label="Email"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule text-muted transition-colors hover:border-accent hover:text-accent"
                 >
-                  <Mail size={15} aria-hidden="true" className="shrink-0" />
-                  <span className="truncate">{profile.links.email}</span>
+                  <Mail size={15} aria-hidden="true" />
                 </a>
               </li>
             </ul>

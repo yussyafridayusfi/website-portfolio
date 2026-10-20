@@ -1,15 +1,9 @@
-import { ArrowUpRight, Github, Linkedin, Mail, Printer } from 'lucide-react'
+import { ArrowUpRight, Github, Linkedin, Printer } from 'lucide-react'
 import { profile } from '../config/portfolio.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import SectionHeading from './SectionHeading.jsx'
 
 const channels = [
-  {
-    key: 'email',
-    value: profile.links.email,
-    href: `mailto:${profile.links.email}`,
-    icon: Mail,
-  },
   {
     key: 'github',
     value: 'github.com/yussyafridayusfi',

@@ -177,6 +177,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     scroll-behavior: smooth;
+    overscroll-behavior-y: none;
     scrollbar-width: none;
   }
 
@@ -249,7 +250,7 @@
     height: 100%;
     transform-origin: left center;
     background: var(--accent);
-    transition: transform 120ms linear;
+    transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   /* Shown only when the active section has more content below the fold. */

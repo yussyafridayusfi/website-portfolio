@@ -7,6 +7,7 @@ import ProjectPage from './components/ProjectPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import { projects, profile } from './config/portfolio.js'
+import { initialSectionReveal } from './lib/smoothScroller.js'
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext.jsx'
 import { useRoute } from './lib/router.jsx'
 
@@ -36,12 +37,8 @@ function Site() {
 
     if (target) {
       if (target.classList.contains('snap-section')) target.scrollTop = 0
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       const frame = window.requestAnimationFrame(() => {
-        target.scrollIntoView({
-          behavior: reduceMotion ? 'auto' : 'smooth',
-          block: 'start',
-        })
+        initialSectionReveal(hash)
       })
       return () => window.cancelAnimationFrame(frame)
     }

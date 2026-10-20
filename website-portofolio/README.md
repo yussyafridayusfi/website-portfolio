@@ -150,17 +150,27 @@ names such as GitHub, Node.js and PostgreSQL stay unchanged.
   Contact.
 - `#scroll-root` is the page’s outer scrolling element. It sits below the 4rem
   header and fills the remaining `100svh`; individual sections may scroll inside it.
-- On `/`, the scroller uses `scroll-snap-type: y mandatory`. Every section is
-  `calc(100svh - 4rem)` tall and has `scroll-snap-align: start`.
+- On `/`, the scroller declares `scroll-snap-type: y mandatory` for touch and keyboard
+  navigation. Every section is `calc(100svh - 4rem)` tall and has `scroll-snap-align: start`.
 - Sections that fit are vertically centered with `justify-content: safe center`.
   When content is taller than the viewport — Projects at most widths, and Skills,
   Repositories and some shorter sections on small phones — the section scrolls
   internally. Content is never clipped.
 - The footer is a final `scroll-snap-align: end` stop, so it remains reachable after
   Contact.
-- Anchor links use native hash navigation and `scroll-behavior: smooth`.
-  `prefers-reduced-motion` switches that to `auto`. Section links reset the target's
-  internal scroll to the top, so a previously scrolled card grid reopens at its heading.
+- Mouse wheel gestures are intercepted on the section scroller so each transition
+  between sections is a short eased glide instead of the browser's hard snap cut.
+  Tall sections continue scrolling internally on wheel; once a section’s seam is
+  reached, the next wheel notch glides to the adjacent section and resets its
+  internal scroll. `prefers-reduced-motion` swaps the glide for instant placement.
+  Touch and keyboard still use CSS Scroll Snap, so iOS momentum and keyboard
+  PageDown stay native.
+- Anchor links (`/#projects`, rail dots, header nav, logo) swash the browser’s
+  instant hash jump and route through the same eased transition by using
+  `history.pushState` + animated scroll. Each link moves focus to the section
+  (keyboard a11y preserved) and target sections start at their top.
+- The footer remains reachable after Contact by continuing the wheel down, and the
+  scroller tracks it as a bottom stop.
 - A 2px progress line below the header tracks overall progress. At `xl` widths, a
   right-hand rail links to every section and labels the active one. The header nav also
   marks the current section with `aria-current`.
@@ -351,9 +361,11 @@ explorer automatically.
   website.
 - No user counts, performance metrics, named employer or certifications are claimed. The
   only dates are the 2020/2021 background and the 2025 award, all taken from the CV.
-- The site and its printed CV use `cr.yussyafrida@gmail.com`, confirmed by the owner.
-  The earlier `yussyafrida0299@gmail.com` address has been replaced. The phone number
-  from the CV is deliberately not published.
+- The printed CV uses `cr.yussyafrida@gmail.com`, confirmed by the owner. The site
+  deliberately does not display the raw address — the hero shows an icon-only mail
+  chip and the contact section shows GitHub/LinkedIn, while the "Email me" button
+  still opens the mail client with the address prefilled. The phone number from the
+  CV is also not published.
 - There is no education or employment section, by request.
 
 ---
@@ -373,10 +385,13 @@ explorer automatically.
   Back/forward between hashes realigns to the hash after the browser's restoration, and
   section links reset a previously scrolled card list to the top.
 - Keyboard PageDown, wheel scrolling and wheel chaining past the end of a tall section
-  were exercised. The footer is the final snap stop. The mobile menu overlays the page
-  at 320 px without changing the scroller height. The “Scroll for more” hint appears
-  only for overflowing sections and hides at their end. Reduced motion reports
-  `scroll-behavior: auto`.
+  were exercised with the eased glide active (Playwright, Chromium). Each wheel notch
+  inside a tall section scrolls that section internally; crossing its seam glides one
+  section with an eased curve — verified with mid-animation scrollTop samples.
+  The footer is the final snap stop. The mobile menu overlays the page at 320 px
+  without changing the scroller height. The “Scroll for more” hint appears only for
+  overflowing sections and hides at their end. Reduced motion reports
+  `scroll-behavior: auto` and lands on the target section without an animated glide.
 - Project detail pages disable snapping, scroll normally inside `#scroll-root`, hide the
   rail/progress line, and reach the footer. All five detail pages were checked at 320,
   390, 768 and 1440 px without horizontal overflow or clipped tables.

@@ -4,6 +4,10 @@ import { navItems } from '../config/portfolio.js'
 import { fill } from '../config/ui.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 import { useActiveSection } from '../lib/useActiveSection.js'
+import {
+  installSmoothSectionScroll,
+  smoothSectionScrollTo,
+} from '../lib/smoothScroller.js'
 
 const sections = [{ id: 'top' }, ...navItems]
 
@@ -18,13 +22,32 @@ export default function SectionProgress() {
   const { activeId, progress } = useActiveSection()
   const [showScrollHint, setShowScrollHint] = useState(false)
 
-  // An in-page section link should reveal the top of that section, even if its
-  // internal scroll area was left near the bottom on an earlier visit.
+  // The full-screen scroller replaces mandatory-snap hard cuts with an eased
+  // transition: wheel boundaries glide between sections, link clicks ease too.
   useEffect(() => {
+    const root = document.getElementById('scroll-root')
+
     const onClick = (event) => {
       const link =
         event.target instanceof Element ? event.target.closest('a[href^="#"]') : null
-      if (link) resetSectionScroll(link.getAttribute('href'))
+      if (!link) return
+      const hash = link.getAttribute('href') || ''
+      const target = document.getElementById(hash.slice(1))
+      if (!target) return
+
+      // Take over the anchor jump: the browser's default would scroll
+      // instantly (or with CSS smooth scrolling that ignores our easing).
+      event.preventDefault()
+
+      // Keep the URL hash and history entry in sync ourselves.
+      if (window.history.pushState) window.history.pushState(null, '', hash)
+      else window.location.hash = hash
+
+      // Anchor navigation also moves focus; keep that for keyboard users.
+      if (typeof target.focus === 'function') target.focus({ preventScroll: true })
+
+      resetSectionScroll(hash)
+      smoothSectionScrollTo(hash)
     }
     const onHashChange = () => resetSectionScroll(window.location.hash)
 
@@ -38,9 +61,22 @@ export default function SectionProgress() {
       if (!target?.classList.contains('snap-section')) return
       window.requestAnimationFrame(() => {
         target.scrollTop = 0
-        const root = document.getElementById('scroll-root')
-        if (root) root.scrollTop = target.offsetTop
+        const scrollRoot = document.getElementById('scroll-root')
+        if (scrollRoot) scrollRoot.scrollTop = target.offsetTop
       })
+    }
+
+    if (root) {
+      const teardown = installSmoothSectionScroll(root)
+      document.addEventListener('click', onClick)
+      window.addEventListener('hashchange', onHashChange)
+      window.addEventListener('popstate', onPopState)
+      return () => {
+        teardown()
+        document.removeEventListener('click', onClick)
+        window.removeEventListener('hashchange', onHashChange)
+        window.removeEventListener('popstate', onPopState)
+      }
     }
 
     document.addEventListener('click', onClick)
