@@ -8,7 +8,7 @@ responsive card grid, each with its own detail page, a skills section grouped by
 live repository explorer, a print-friendly CV, two languages (English and Indonesian), and a
 light/dark theme.
 
-Live site: `https://yussyafridayusfi.github.io/example-portfolio/`
+Live site: `https://yussyafridayusfi.github.io/website-portfolio/`
 
 ---
 
@@ -35,14 +35,14 @@ No backend, no database, no analytics, no tracking scripts, no web fonts.
 ```bash
 cd website-portofolio
 npm install
-npm run dev        # http://localhost:5173/example-portfolio/
+npm run dev        # http://localhost:5173/website-portfolio/
 npm run build      # production build into dist/
 npm run preview    # serve the production build locally
 ```
 
 Node 20.19+ or 22.12+ is required by Vite 7.
 
-> The dev server also serves under `/example-portfolio/` because `base` is set in
+> The dev server also serves under `/website-portfolio/` because `base` is set in
 > `vite.config.js`. Open the URL printed by Vite, not bare `localhost:5173`.
 
 ---
@@ -190,7 +190,7 @@ names such as GitHub, Node.js and PostgreSQL stay unchanged.
   section links (`/#projects`, `/#contact`).
 - GitHub Pages has no SPA fallback. `public/404.html` stores the intended path in
   `sessionStorage` and returns to the app, which restores it before React routes.
-- **If the repository is renamed**, update the `/example-portfolio/` prefix in three
+- **If the repository is renamed**, update the `/website-portfolio/` prefix in three
   places: `vite.config.js` (`base`), `public/404.html`, and the restore script in
   `index.html`.
 
@@ -253,17 +253,17 @@ Background graphics are not required.
 
 ### 1. Repository
 
-The site lives in a subfolder of the existing `example-portfolio` repository.
+The site lives in `website-portofolio/` in the `website-portfolio` repository.
 The Vite base path therefore matches that repository name:
 
 ```js
 // vite.config.js
-base: '/example-portfolio/'
+base: '/website-portfolio/'
 ```
 
-If you rename the repository or move this folder into its own repository, change
-`base` to the new repository name (including leading and trailing slashes) **and**
-update the two `/example-portfolio/` references described under routing.
+If you rename the repository, change `base` to the new repository name (including
+leading and trailing slashes) **and** update the two hardcoded `/website-portfolio/`
+prefixes described under routing.
 
 ### 2. Workflow
 
@@ -283,15 +283,15 @@ reads workflows from there):
 3. Under **Build and deployment → Source**, choose **GitHub Actions**.
 4. Run the workflow (push, or **Actions → Deploy portfolio to GitHub Pages → Run workflow**).
 5. The first deployment prints the URL. It should be
-   `https://yussyafridayusfi.github.io/example-portfolio/`.
+   `https://yussyafridayusfi.github.io/website-portfolio/`.
 
 No `gh-pages` branch and no manual `dist` commit are needed.
 
 ### 4. Deployment status
 
 - Deployed from `master` through the workflow above.
-- **Live:** `https://yussyafridayusfi.github.io/example-portfolio/`
-- Deep links such as `/example-portfolio/projects/sembarang-budal` are served
+- **Live:** `https://yussyafridayusfi.github.io/website-portfolio/`
+- Deep links such as `/website-portfolio/projects/sembarang-budal` are served
   through `public/404.html` and restored before React renders.
 
 ---
@@ -400,8 +400,9 @@ explorer automatically.
 
 ## Remaining tasks for the owner
 
-1. Confirm the repository name stays `example-portfolio`; otherwise update `base` and
-   the `/example-portfolio/` prefixes in `index.html` and `public/404.html`.
+1. Keep the repository name `website-portfolio`; the configured base is
+   `/website-portfolio/`. If it changes, update `base`, `index.html`, and
+   `public/404.html` together.
 2. Optionally add a custom domain (`public/CNAME` + DNS), then update `base` to `/`.
 3. Keep `src/config/portfolio.js` and `src/config/ui.js` in sync as projects change.
 4. Re-run Lighthouse on the deployed URL; the last baseline predates the full-screen

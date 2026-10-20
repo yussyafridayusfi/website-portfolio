@@ -41,7 +41,7 @@
         // the intended path and returns here. Restore it before React routes.
         try {
           var redirect = sessionStorage.getItem('spa-redirect')
-          if (redirect && redirect.indexOf('/example-portfolio/') === 0) {
+          if (redirect && redirect.indexOf('/website-portfolio/') === 0) {
             sessionStorage.removeItem('spa-redirect')
             window.history.replaceState(null, '', redirect)
           }
