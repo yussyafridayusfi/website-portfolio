@@ -8,7 +8,7 @@ responsive card grid, each with its own detail page, a skills section grouped by
 live repository explorer, a print-friendly CV, two languages (English and Indonesian), and a
 light/dark theme.
 
-Live target: `https://yussyafridayusfi.github.io/example-portfolio/`
+Live site: `https://yussyafridayusfi.github.io/example-portfolio/`
 
 ---
 
@@ -287,11 +287,12 @@ reads workflows from there):
 
 No `gh-pages` branch and no manual `dist` commit are needed.
 
-### 4. Before the first deploy
+### 4. Deployment status
 
-- Confirm the repository name and update the base path if it differs.
-- Confirm you are happy for the site to be public. **Nothing has been pushed or
-  deployed by this build.**
+- Deployed from `master` through the workflow above.
+- **Live:** `https://yussyafridayusfi.github.io/example-portfolio/`
+- Deep links such as `/example-portfolio/projects/sembarang-budal` are served
+  through `public/404.html` and restored before React renders.
 
 ---
 
