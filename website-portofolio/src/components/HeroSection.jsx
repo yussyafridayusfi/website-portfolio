@@ -1,49 +1,44 @@
 import { ArrowDown, Github, Linkedin, Mail, Printer } from 'lucide-react'
-import { profile } from '../config/portfolio.js'
-
-const facts = [
-  {
-    term: 'Focus',
-    detail: 'Backend engineering in Node.js — API design, data modelling, error handling.',
-  },
-  {
-    term: 'Background',
-    detail: 'Laravel, C# / ASP.NET Core, Vue.js, SQL databases, REST API integration.',
-  },
-  {
-    term: 'Looking for',
-    detail: 'Software development and backend roles, including remote positions.',
-  },
-]
+import { heroFacts, profile } from '../config/portfolio.js'
+import { useLanguage } from '../i18n/LanguageContext.jsx'
 
 export default function HeroSection() {
+  const { lang, t } = useLanguage()
+
   return (
-    <section id="top" className="border-b border-rule">
-      <div className="shell pt-16 pb-14 md:pt-24 md:pb-20">
-        <p className="eyebrow">Portfolio — selected work</p>
+    <section
+      id="top"
+      className="snap-section border-b border-rule"
+      tabIndex={0}
+      aria-label={t.nav.top}
+    >
+      <div className="shell pt-10 pb-8 md:pt-14 md:pb-12">
+        <p className="eyebrow">{t.hero.eyebrow}</p>
 
-        <h1 className="mt-6 font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.98]">
-          {profile.name}
-        </h1>
+        <div className="mt-4 grid gap-x-10 gap-y-8 md:grid-cols-12">
+          <div className="md:col-span-8">
+            <h1 className="font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-[1.02]">
+              {profile.name}
+            </h1>
 
-        <p className="mt-5 font-display text-[clamp(1.1rem,2.6vw,1.6rem)] text-muted">
-          {profile.role}
-          <span className="px-3 text-rule" aria-hidden="true">
-            |
-          </span>
-          {profile.focus}
-        </p>
+            <p className="mt-3 font-display text-base text-muted md:text-xl">
+              <span>{profile.role[lang]}</span>
+              <span className="hidden px-2.5 text-rule sm:inline" aria-hidden="true">
+                |
+              </span>
+              <span className="block sm:inline">{profile.focus[lang]}</span>
+            </p>
 
-        <div className="mt-12 grid gap-x-12 gap-y-10 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <p className="max-w-2xl text-lg text-muted">{profile.intro}</p>
+            <p className="mt-5 max-w-2xl text-[0.95rem] text-muted md:text-[1.0625rem]">
+              {profile.intro[lang]}
+            </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a
                 href="#projects"
                 className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-bg transition-opacity hover:opacity-85"
               >
-                View projects
+                {t.hero.viewProjects}
                 <ArrowDown size={15} aria-hidden="true" />
               </a>
 
@@ -53,11 +48,11 @@ export default function HeroSection() {
                 className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
               >
                 <Printer size={15} aria-hidden="true" />
-                Print / save CV
+                {t.hero.printCv}
               </button>
             </div>
 
-            <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-rule pt-6">
+            <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5 border-t border-rule pt-5">
               <li>
                 <a
                   href={profile.links.github}
@@ -80,23 +75,28 @@ export default function HeroSection() {
                   LinkedIn
                 </a>
               </li>
-              <li>
+              <li className="min-w-0">
                 <a
                   href={`mailto:${profile.links.email}`}
-                  className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+                  className="inline-flex max-w-full items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
-                  <Mail size={15} aria-hidden="true" />
-                  {profile.links.email}
+                  <Mail size={15} aria-hidden="true" className="shrink-0" />
+                  <span className="truncate">{profile.links.email}</span>
                 </a>
               </li>
             </ul>
           </div>
 
-          <dl className="md:col-span-5 md:border-l md:border-rule md:pl-12">
-            {facts.map((fact) => (
-              <div key={fact.term} className="border-b border-rule py-5 first:pt-0 last:border-0">
-                <dt className="eyebrow">{fact.term}</dt>
-                <dd className="mt-2 text-sm text-muted">{fact.detail}</dd>
+          <dl className="md:col-span-4 md:border-l md:border-rule md:pl-8">
+            {heroFacts.map((fact, index) => (
+              <div
+                key={fact.term.en}
+                className={`border-b border-rule py-3.5 first:pt-0 last:border-0 last:pb-0 ${
+                  index === 0 ? 'hidden sm:block' : ''
+                }`}
+              >
+                <dt className="eyebrow">{fact.term[lang]}</dt>
+                <dd className="mt-1.5 text-sm text-muted">{fact.detail[lang]}</dd>
               </div>
             ))}
           </dl>

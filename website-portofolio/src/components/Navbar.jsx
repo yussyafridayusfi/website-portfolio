@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Menu, X, Printer, Moon, Sun } from 'lucide-react'
 import { navItems, profile } from '../config/portfolio.js'
+import { useLanguage } from '../i18n/LanguageContext.jsx'
+import { BASE, useRoute } from '../lib/router.jsx'
+import { useActiveSection } from '../lib/useActiveSection.js'
+import LanguageToggle from './LanguageToggle.jsx'
 
 function useTheme() {
   const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'light')
@@ -18,10 +22,16 @@ function useTheme() {
 }
 
 export default function Navbar() {
-  const [theme, setTheme] = useTheme()
+  const { t } = useLanguage()
+  const themeState = useTheme()
+  const [theme, setTheme] = themeState
   const [open, setOpen] = useState(false)
+  const path = useRoute()
 
   const close = useCallback(() => setOpen(false), [])
+  const onHome = path === '/'
+  const { activeId } = useActiveSection(onHome, false)
+  const sectionHref = (id) => (onHome ? `#${id}` : `${BASE}#${id}`)
 
   useEffect(() => {
     if (!open) return undefined
@@ -35,29 +45,41 @@ export default function Navbar() {
   const isDark = theme === 'dark'
 
   return (
-    <header className="sticky top-0 z-50 border-b border-rule bg-bg/85 backdrop-blur-sm no-print">
-      <div className="shell flex h-16 items-center justify-between gap-6">
+    <header className="relative z-50 h-16 shrink-0 border-b border-rule bg-bg/95 no-print">
+      <div className="shell flex h-full items-center justify-between gap-4">
         <a
-          href="#top"
+          href={onHome ? '#top' : BASE}
           onClick={close}
           className="font-display text-lg tracking-tight whitespace-nowrap"
         >
           {profile.name}
         </a>
 
-        <nav aria-label="Sections" className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <a key={item.id} href={`#${item.id}`} className="text-sm text-muted transition-colors hover:text-accent">
-              {item.label}
-            </a>
-          ))}
+        <nav aria-label={t.nav.sections} className="hidden items-center gap-5 lg:flex xl:gap-8">
+          {navItems.map((item) => {
+            const current = item.id === activeId
+            return (
+              <a
+                key={item.id}
+                href={sectionHref(item.id)}
+                aria-current={current ? 'location' : undefined}
+                className={`text-sm transition-colors hover:text-accent ${
+                  current ? 'text-ink' : 'text-muted'
+                }`}
+              >
+                {t.nav[item.id]}
+              </a>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageToggle />
+
           <button
             type="button"
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+            aria-label={isDark ? t.theme.toLight : t.theme.toDark}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule text-muted transition-colors hover:border-accent hover:text-accent"
           >
             {isDark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
@@ -69,7 +91,7 @@ export default function Navbar() {
             className="hidden items-center gap-2 rounded-full border border-rule px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent sm:inline-flex"
           >
             <Printer size={15} aria-hidden="true" />
-            Print CV
+            {t.cv.printCv}
           </button>
 
           <button
@@ -77,8 +99,8 @@ export default function Navbar() {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule text-muted md:hidden"
+            aria-label={open ? t.theme.closeMenu : t.theme.openMenu}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule text-muted lg:hidden"
           >
             {open ? <X size={16} aria-hidden="true" /> : <Menu size={16} aria-hidden="true" />}
           </button>
@@ -88,18 +110,21 @@ export default function Navbar() {
       {open && (
         <nav
           id="mobile-menu"
-          aria-label="Sections"
-          className="border-t border-rule bg-surface md:hidden"
+          aria-label={t.nav.sections}
+          className="absolute inset-x-0 top-full z-50 max-h-[calc(100svh-4rem)] overflow-y-auto border-y border-rule bg-surface shadow-sm lg:hidden"
         >
           <ul className="shell flex flex-col py-2">
             {navItems.map((item) => (
               <li key={item.id}>
                 <a
-                  href={`#${item.id}`}
+                  href={sectionHref(item.id)}
                   onClick={close}
-                  className="block border-b border-rule py-3 text-sm text-muted last:border-0"
+                  aria-current={item.id === activeId ? 'location' : undefined}
+                  className={`block border-b border-rule py-3 text-sm last:border-0 ${
+                    item.id === activeId ? 'text-ink' : 'text-muted'
+                  }`}
                 >
-                  {item.label}
+                  {t.nav[item.id]}
                 </a>
               </li>
             ))}
@@ -113,7 +138,7 @@ export default function Navbar() {
                 className="flex w-full items-center gap-2 py-3 text-left text-sm text-muted"
               >
                 <Printer size={15} aria-hidden="true" />
-                Print CV
+                {t.cv.printCv}
               </button>
             </li>
           </ul>

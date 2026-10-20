@@ -1,22 +1,23 @@
 import { ArrowUpRight, Github, Linkedin, Mail, Printer } from 'lucide-react'
 import { profile } from '../config/portfolio.js'
+import { useLanguage } from '../i18n/LanguageContext.jsx'
 import SectionHeading from './SectionHeading.jsx'
 
 const channels = [
   {
-    label: 'Email',
+    key: 'email',
     value: profile.links.email,
     href: `mailto:${profile.links.email}`,
     icon: Mail,
   },
   {
-    label: 'GitHub',
+    key: 'github',
     value: 'github.com/yussyafridayusfi',
     href: profile.links.github,
     icon: Github,
   },
   {
-    label: 'LinkedIn',
+    key: 'linkedin',
     value: 'linkedin.com/in/yussyafridacr',
     href: profile.links.linkedin,
     icon: Linkedin,
@@ -24,23 +25,27 @@ const channels = [
 ]
 
 export default function ContactSection() {
+  const { t } = useLanguage()
+
   return (
-    <section id="contact" className="py-16 md:py-24">
+    <section
+      id="contact"
+      className="snap-section py-10 md:py-14"
+      tabIndex={0}
+      aria-label={t.nav.contact}
+    >
       <div className="shell">
-        <SectionHeading index="05" id="Contact" title="Get in touch" />
+        <SectionHeading index={t.contact.index} id={t.contact.label} title={t.contact.title} />
 
         <div className="grid gap-x-12 gap-y-10 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="max-w-md text-lg text-muted">
-              I am open to software development and backend engineering roles, including remote
-              work with international teams, and to conversations about the projects above.
-            </p>
+            <p className="max-w-md text-[0.975rem] text-muted">{t.contact.body}</p>
 
             <a
-              href={`mailto:${profile.links.email}?subject=Software%20development%20role`}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-bg transition-opacity hover:opacity-85"
+              href={`mailto:${profile.links.email}?subject=${encodeURIComponent(t.contact.subject)}`}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-bg transition-opacity hover:opacity-85"
             >
-              Email me
+              {t.contact.emailCta}
               <ArrowUpRight size={15} aria-hidden="true" />
             </a>
 
@@ -50,21 +55,21 @@ export default function ContactSection() {
               className="mt-4 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
             >
               <Printer size={15} aria-hidden="true" />
-              Print / save my CV as PDF
+              {t.contact.print}
             </button>
           </div>
 
           <ul className="md:col-span-7 md:border-l md:border-rule md:pl-12">
-            {channels.map(({ label, value, href, icon: Icon }) => (
-              <li key={label} className="border-b border-rule last:border-0">
+            {channels.map(({ key, value, href, icon: Icon }) => (
+              <li key={key} className="border-b border-rule last:border-0">
                 <a
                   href={href}
                   target={href.startsWith('mailto:') ? undefined : '_blank'}
                   rel={href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
-                  className="group flex items-center justify-between gap-6 py-5"
+                  className="group flex items-center justify-between gap-6 py-4"
                 >
                   <span>
-                    <span className="eyebrow block">{label}</span>
+                    <span className="eyebrow block">{t.contact.labels[key]}</span>
                     <span className="mt-1 block font-mono text-sm text-ink group-hover:text-accent">
                       {value}
                     </span>

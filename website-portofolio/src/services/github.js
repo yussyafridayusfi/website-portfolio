@@ -9,8 +9,8 @@
 
 import { githubApiUrl } from '../config/portfolio.js'
 
-const CACHE_KEY = 'github-repos-cache-v1'
-const CACHE_TTL_MS = 10 * 60 * 1000
+const CACHE_KEY = 'github-repos-cache-v2'
+const CACHE_TTL_MS = 5 * 60 * 1000
 const REQUEST_TIMEOUT_MS = 12 * 1000
 
 export class GitHubError extends Error {
@@ -128,16 +128,36 @@ export async function fetchRepositories({ signal, force = false } = {}) {
   return { repos, fromCache: false }
 }
 
-export function formatRelativeDate(isoString) {
+const RELATIVE_LABELS = {
+  en: {
+    today: 'today',
+    yesterday: 'yesterday',
+    days: (count) => `${count} days ago`,
+    months: (count) => `${count} month${count === 1 ? '' : 's'} ago`,
+    years: (count) => `${count} year${count === 1 ? '' : 's'} ago`,
+  },
+  id: {
+    today: 'hari ini',
+    yesterday: 'kemarin',
+    days: (count) => `${count} hari lalu`,
+    months: (count) => `${count} bulan lalu`,
+    years: (count) => `${count} tahun lalu`,
+  },
+}
+
+export function formatRelativeDate(isoString, lang = 'en') {
   if (!isoString) return ''
   const then = new Date(isoString)
   if (Number.isNaN(then.getTime())) return ''
+
+  const labels = RELATIVE_LABELS[lang] ?? RELATIVE_LABELS.en
   const days = Math.floor((Date.now() - then.getTime()) / 86_400_000)
-  if (days <= 0) return 'today'
-  if (days === 1) return 'yesterday'
-  if (days < 30) return `${days} days ago`
+  if (days <= 0) return labels.today
+  if (days === 1) return labels.yesterday
+  if (days < 30) return labels.days(days)
+
   const months = Math.floor(days / 30)
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} ago`
-  const years = Math.floor(months / 12)
-  return `${years} year${years === 1 ? '' : 's'} ago`
+  if (months < 12) return labels.months(months)
+
+  return labels.years(Math.floor(months / 12))
 }

@@ -6,22 +6,47 @@
     <title>Yussyafrida C.R. — Software Developer, Backend Engineering</title>
     <meta
       name="description"
-      content="Portfolio of Yussyafrida C.R., a software developer with a background in Laravel, C#, ASP.NET Core, Vue.js and SQL, focused on Node.js backend engineering."
+      content="Portfolio of Yussyafrida C.R., a software developer in Sidoarjo, Indonesia, building internal business applications with .NET/C#, Node.js, SQL and PostgreSQL."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Yussyafrida C.R. — Software Developer" />
+    <meta
+      property="og:description"
+      content="Selected projects and public repositories from a software developer working in .NET/C#, Node.js, SQL and PostgreSQL."
     />
     <meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#131514" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <script>
-      // Apply the stored theme before first paint so the page does not flash.
       ;(function () {
+        // Apply the stored theme and language before first paint.
         try {
-          var stored = localStorage.getItem('theme')
+          var storedTheme = localStorage.getItem('theme')
           var dark =
-            stored === 'dark' ||
-            (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            storedTheme === 'dark' ||
+            (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
           document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+
+          var storedLanguage = localStorage.getItem('language')
+          if (storedLanguage === 'en' || storedLanguage === 'id') {
+            document.documentElement.lang = storedLanguage
+          } else if ((navigator.language || '').toLowerCase().startsWith('id')) {
+            document.documentElement.lang = 'id'
+          }
         } catch (error) {
           document.documentElement.dataset.theme = 'light'
+        }
+
+        // GitHub Pages answers unknown paths with public/404.html, which stores
+        // the intended path and returns here. Restore it before React routes.
+        try {
+          var redirect = sessionStorage.getItem('spa-redirect')
+          if (redirect && redirect.indexOf('/example-portfolio/') === 0) {
+            sessionStorage.removeItem('spa-redirect')
+            window.history.replaceState(null, '', redirect)
+          }
+        } catch (error) {
+          // A blocked sessionStorage only costs the deep-link restore.
         }
       })()
     </script>

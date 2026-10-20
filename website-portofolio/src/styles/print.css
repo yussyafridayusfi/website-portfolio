@@ -17,7 +17,10 @@
 
 @media print {
   html,
-  body {
+  body,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
     background: #ffffff !important;
     color: #000000 !important;
     font-size: 10.5pt;

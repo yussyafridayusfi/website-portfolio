@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting…</title>
+    <script>
+      ;(function () {
+        // GitHub Pages has no SPA fallback. This page is served for deep links
+        // such as /example-portfolio/projects/sembarang-budal; remember the
+        // intended path and hand control back to the app.
+        try {
+          sessionStorage.setItem(
+            'spa-redirect',
+            location.pathname + location.search + location.hash,
+          )
+        } catch (error) {
+          // Without storage the visitor still lands on the home page.
+        }
+        location.replace('/example-portfolio/')
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>
