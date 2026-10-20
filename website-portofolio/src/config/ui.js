@@ -36,7 +36,8 @@ export const ui = {
     hero: {
       eyebrow: 'Portfolio — selected work',
       viewProjects: 'View projects',
-      printCv: 'Print / save CV',
+      showCv: 'Show my CV',
+      downloadCv: 'Download CV (PDF)',
     },
     about: {
       index: '01',
@@ -142,7 +143,8 @@ export const ui = {
       title: 'Get in touch',
       body: 'The fastest way to reach me is email. I am happy to talk about any project above or a role on your team.',
       emailCta: 'Email me',
-      print: 'Print / save my CV as PDF',
+      showCv: 'Show my CV',
+      downloadCv: 'Download CV (PDF)',
       subject: 'Software development role',
       labels: {
         email: 'Email',
@@ -160,7 +162,10 @@ export const ui = {
       projects: 'Selected projects',
       contact: 'Contact',
       stack: 'Stack',
-      printCv: 'Print CV',
+      showCv: 'Show CV',
+      downloadCv: 'Download CV (PDF)',
+      backHome: 'Back to portfolio',
+      printHere: 'Print / save as PDF',
     },
   },
 
@@ -194,7 +199,8 @@ export const ui = {
     hero: {
       eyebrow: 'Portofolio — karya pilihan',
       viewProjects: 'Lihat proyek',
-      printCv: 'Cetak / simpan CV',
+      showCv: 'Lihat CV saya',
+      downloadCv: 'Unduh CV (PDF)',
     },
     about: {
       index: '01',
@@ -300,7 +306,8 @@ export const ui = {
       title: 'Mari terhubung',
       body: 'Cara tercepat menghubungi saya adalah email. Saya senang membahas proyek di atas atau peran di tim Anda.',
       emailCta: 'Kirim email',
-      print: 'Cetak / simpan CV saya sebagai PDF',
+      showCv: 'Lihat CV saya',
+      downloadCv: 'Unduh CV (PDF)',
       subject: 'Posisi software development',
       labels: {
         email: 'Email',
@@ -318,7 +325,10 @@ export const ui = {
       projects: 'Proyek pilihan',
       contact: 'Kontak',
       stack: 'Teknologi',
-      printCv: 'Cetak CV',
+      showCv: 'Lihat CV',
+      downloadCv: 'Unduh CV (PDF)',
+      backHome: 'Kembali ke portofolio',
+      printHere: 'Cetak / simpan sebagai PDF',
     },
   },
 }

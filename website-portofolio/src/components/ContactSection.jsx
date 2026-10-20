@@ -1,6 +1,7 @@
-import { ArrowUpRight, Github, Linkedin, Printer } from 'lucide-react'
-import { profile } from '../config/portfolio.js'
+import { ArrowUpRight, Download, Eye, Github, Linkedin } from 'lucide-react'
+import { cvFiles, profile } from '../config/portfolio.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
+import { BASE, navigate } from '../lib/router.jsx'
 import SectionHeading from './SectionHeading.jsx'
 
 const channels = [
@@ -19,7 +20,7 @@ const channels = [
 ]
 
 export default function ContactSection() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
 
   return (
     <section
@@ -45,12 +46,21 @@ export default function ContactSection() {
 
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={() => navigate('/cv')}
               className="mt-4 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
             >
-              <Printer size={15} aria-hidden="true" />
-              {t.contact.print}
+              <Eye size={15} aria-hidden="true" />
+              {t.contact.showCv}
             </button>
+
+            <a
+              href={`${BASE}${cvFiles[lang] ?? cvFiles.en}`}
+              download
+              className="mt-4 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+            >
+              <Download size={15} aria-hidden="true" />
+              {t.contact.downloadCv}
+            </a>
           </div>
 
           <ul className="md:col-span-7 md:border-l md:border-rule md:pl-12">

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx'
 import SectionProgress from './components/SectionProgress.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 import CvDocument from './components/CvDocument.jsx'
+import CvPage from './components/CvPage.jsx'
 import ProjectPage from './components/ProjectPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
@@ -24,7 +25,9 @@ function Site() {
   useEffect(() => {
     document.title = project
       ? `${project.name} — ${profile.name}`
-      : `${profile.name} — ${profile.role.en}, ${profile.focus.en}`
+      : path === '/cv'
+        ? `CV — ${profile.name}`
+        : `${profile.name} — ${profile.role.en}, ${profile.focus.en}`
 
     const root = document.getElementById('scroll-root')
     if (!root) return undefined
@@ -69,6 +72,8 @@ function Site() {
               <HomePage />
             ) : project ? (
               <ProjectPage project={project} index={projectIndex} />
+            ) : path === '/cv' ? (
+              <CvPage />
             ) : (
               <NotFoundPage />
             )}

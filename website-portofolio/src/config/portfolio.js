@@ -9,6 +9,17 @@
  * sections, education, invented metrics or proficiency scores are included.
  */
 
+/**
+ * Downloadable CV files, generated from the same configuration as the printed
+ * CV (same profile data, same project list) with the current English and
+ * Indonesian copy. Paths are relative to `public/` and are served next to the
+ * site so they work on GitHub Pages too.
+ */
+export const cvFiles = {
+  en: 'cv/yussyafrida-cr-cv-en.pdf',
+  id: 'cv/yussyafrida-cr-cv-id.pdf',
+}
+
 export const profile = {
   name: 'Yussyafrida C.R.',
   fullName: 'Yussyafrida Choiriizzati Rochmana',

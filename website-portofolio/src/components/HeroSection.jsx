@@ -1,6 +1,7 @@
-import { ArrowDown, Github, Linkedin, Mail, Printer } from 'lucide-react'
-import { heroFacts, profile } from '../config/portfolio.js'
+import { ArrowDown, Download, Eye, Github, Linkedin, Mail, Printer } from 'lucide-react'
+import { cvFiles, heroFacts, profile } from '../config/portfolio.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
+import { BASE, navigate } from '../lib/router.jsx'
 
 export default function HeroSection() {
   const { lang, t } = useLanguage()
@@ -44,12 +45,21 @@ export default function HeroSection() {
 
               <button
                 type="button"
-                onClick={() => window.print()}
+                onClick={() => navigate('/cv')}
                 className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
               >
-                <Printer size={15} aria-hidden="true" />
-                {t.hero.printCv}
+                <Eye size={15} aria-hidden="true" />
+                {t.hero.showCv}
               </button>
+
+              <a
+                href={`${BASE}${cvFiles[lang] ?? cvFiles.en}`}
+                download
+                className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+              >
+                <Download size={15} aria-hidden="true" />
+                {t.hero.downloadCv}
+              </a>
             </div>
 
             <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5 border-t border-rule pt-5">

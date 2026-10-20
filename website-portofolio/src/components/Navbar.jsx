@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Menu, X, Printer, Moon, Sun } from 'lucide-react'
+import { Menu, X, Eye, Moon, Sun } from 'lucide-react'
 import { navItems, profile } from '../config/portfolio.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
-import { BASE, useRoute } from '../lib/router.jsx'
+import { BASE, navigate, useRoute } from '../lib/router.jsx'
 import { useActiveSection } from '../lib/useActiveSection.js'
 import LanguageToggle from './LanguageToggle.jsx'
 
@@ -87,11 +87,11 @@ export default function Navbar() {
 
           <button
             type="button"
-            onClick={() => window.print()}
+            onClick={() => navigate('/cv')}
             className="hidden items-center gap-2 rounded-full border border-rule px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent sm:inline-flex"
           >
-            <Printer size={15} aria-hidden="true" />
-            {t.cv.printCv}
+            <Eye size={15} aria-hidden="true" />
+            {t.cv.showCv}
           </button>
 
           <button
@@ -133,12 +133,12 @@ export default function Navbar() {
                 type="button"
                 onClick={() => {
                   close()
-                  window.print()
+                  navigate('/cv')
                 }}
                 className="flex w-full items-center gap-2 py-3 text-left text-sm text-muted"
               >
-                <Printer size={15} aria-hidden="true" />
-                {t.cv.printCv}
+                <Eye size={15} aria-hidden="true" />
+                {t.cv.showCv}
               </button>
             </li>
           </ul>

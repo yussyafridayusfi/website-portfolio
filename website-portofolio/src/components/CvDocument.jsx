@@ -7,7 +7,8 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
  * Rendered from the same configuration as the website, so the two can never
  * disagree, and it follows the active language. It is hidden on screen and
  * swapped in by print.css, which keeps the web layout free of print-specific
- * compromises.
+ * compromises; the `/cv` route shows the same markup as an on-screen preview
+ * (`screen` removes the print-only `aria-hidden`).
  *
  * Only confirmed information appears: a summary, skills and selected projects.
  * There is deliberately no education or employment section, and no fabricated
@@ -16,7 +17,7 @@ import { useLanguage } from '../i18n/LanguageContext.jsx'
  * The 2025 internal innovation award is included here but deliberately kept
  * out of the public About section.
  */
-export default function CvDocument() {
+export default function CvDocument({ screen = false }) {
   const { lang, t } = useLanguage()
 
   const cvParagraphs = [...profile.about[lang]]
@@ -30,7 +31,7 @@ export default function CvDocument() {
   }))
 
   return (
-    <div className="cv-document" aria-hidden="true">
+    <div className="cv-document" aria-hidden={screen ? undefined : 'true'}>
       <header className="cv-header">
         <h1 className="cv-name">{profile.fullName}</h1>
         <p className="cv-role">

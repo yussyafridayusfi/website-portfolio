@@ -55,10 +55,13 @@ website-portofolio/
 │   ├── 404.html                 # SPA deep-link fallback for GitHub Pages
 │   ├── projects/
 │   │   └── sembarang-budal.webp # real screenshot of the live demo
+│   ├── cv/
+│   │   ├── yussyafrida-cr-cv-en.pdf # pre-generated A4 CV download (English)
+│   │   └── yussyafrida-cr-cv-id.pdf # pre-generated A4 CV download (Indonesian)
 │   └── favicon.svg
 ├── src/
 │   ├── components/
-│   │   ├── Navbar.jsx           # fixed header, mobile menu, language + theme + print
+│   │   ├── Navbar.jsx           # fixed header, mobile menu, language + theme + show CV
 │   │   ├── SectionProgress.jsx  # progress line, section rail, hash-scroll reset
 │   │   ├── LanguageToggle.jsx
 │   │   ├── HeroSection.jsx
@@ -72,7 +75,8 @@ website-portofolio/
 │   │   ├── ContactSection.jsx
 │   │   ├── SectionHeading.jsx
 │   │   ├── SiteFooter.jsx
-│   │   └── CvDocument.jsx       # print-only CV
+│   │   ├── CvDocument.jsx       # the CV content, shared by print and the /cv route
+│   │   └── CvPage.jsx           # on-screen CV preview (/cv) with download + print
 │   ├── config/
 │   │   ├── portfolio.js         # profile, skills, five projects, featured slugs
 │   │   └── ui.js                # all interface strings, in English and Indonesian
@@ -236,10 +240,23 @@ hard-coded repository count so removals and additions do not make the page stale
 
 ---
 
-## Print CV
+## CV — show, download, print
 
-The **Print CV** buttons call `window.print()`. `src/styles/print.css` hides the web
-page, shows `CvDocument`, and applies A4 margins. The printout contains:
+The CV is reachable in three ways, all rendered from the same configuration, so they
+can never disagree:
+
+- **Show** — every "Show my CV" button (hero, contact, navbar) opens the `/cv` route,
+  an on-screen preview of the printed CV. `CvPage.jsx` renders the same `CvDocument`
+  the print stylesheet swaps in, styled as a paper-like sheet, with "Back to
+  portfolio", "Download CV (PDF)" and "Print / save as PDF" actions.
+- **Download** — `Download CV (PDF)` links serve the pre-generated A4 PDF from
+  `public/cv/`, choosing the English or Indonesian file to match the active language
+  (`cvFiles` in `src/config/portfolio.js`). Regenerate these files whenever the CV
+  content changes.
+- **Print** — `window.print()`. `src/styles/print.css` hides the web page, shows
+  `CvDocument`, and applies A4 margins. Printing from any route (including `/cv`)
+  produces the same single CV; the preview clone on `/cv` lives inside the hidden
+  `.site-shell`, so it never prints twice. The printout contains:
 
 - full name, role, location and contact links
 - profile summary (the public paragraphs plus the 2025 internal innovation award,
@@ -361,11 +378,11 @@ explorer automatically.
   website.
 - No user counts, performance metrics, named employer or certifications are claimed. The
   only dates are the 2020/2021 background and the 2025 award, all taken from the CV.
-- The printed CV uses `cr.yussyafrida@gmail.com`, confirmed by the owner. The site
-  deliberately does not display the raw address — the hero shows an icon-only mail
-  chip and the contact section shows GitHub/LinkedIn, while the "Email me" button
-  still opens the mail client with the address prefilled. The phone number from the
-  CV is also not published.
+- The printed CV — and therefore the `/cv` preview — uses `cr.yussyafrida@gmail.com`,
+  confirmed by the owner. The rest of the site deliberately does not display the raw
+  address — the hero shows an icon-only mail chip and the contact section shows
+  GitHub/LinkedIn, while the "Email me" button still opens the mail client with the
+  address prefilled. The phone number from the CV is also not published.
 - There is no education or employment section, by request.
 
 ---
@@ -410,6 +427,15 @@ explorer automatically.
 - Print CSS rendered with Playwright: 2 A4 pages in English and Indonesian; summary,
   award and skills on page 1, all five projects and contact across pages 1–2; no clipped
   text or broken entries.
+- CV feature (Playwright, Chromium): "Show my CV" (EN) / "Lihat CV saya" (ID) opens
+  `/cv` with the correct document title and the active language's copy; the preview
+  sheet renders all four sections and scrolls inside `#scroll-root` with snap disabled;
+  "Back to portfolio" returns home. Both download links resolve `200/application/pdf`
+  and fire a real download (`yussyafrida-cr-cv-en.pdf` for EN, `-id-` for ID). With
+  print media emulation, exactly one `CvDocument` is visible from both the home page
+  and `/cv` — the preview clone stays inside the hidden `.site-shell`.
+- `npm run build` after the CV feature: 1,605 modules; 314.2 kB JS / 98.4 kB gzip and
+  33.3 kB CSS / 7.7 kB gzip.
 - Lighthouse was not re-run after the full-screen refactor. Earlier compact-layout
   baseline: Accessibility 100, Best Practices 100, SEO 100.
 
